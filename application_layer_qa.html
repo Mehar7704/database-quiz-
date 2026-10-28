@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Application Layer: Easy Questions &amp; Answers</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f8fc;--tx:#1d2233;--card:#fff;--mut:#5b627a;--qs:32%;--qb:40%;--ab:94%;--al:45%}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161f;--tx:#e8eaf3;--card:#1d2030;--mut:#a3a9c0;--qs:75%;--qb:30%;--ab:20%;--al:60%}}
+:root[data-theme="dark"]{--bg:#14161f;--tx:#e8eaf3;--card:#1d2030;--mut:#a3a9c0;--qs:75%;--qb:30%;--ab:20%;--al:60%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.55 "Segoe UI",Calibri,Arial,sans-serif}
+main{max-width:820px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.7rem;margin:8px 0 4px}
+.sub{color:var(--mut);margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}
+button{font:inherit;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;background:#3b5bdb;color:#fff}
+button:focus-visible{outline:3px solid #f59f00}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.legend a{color:#fff;text-decoration:none;font-size:.85rem;padding:3px 10px;border-radius:99px}
+section{margin:26px 0}
+section h2{margin:0 0 10px;padding:10px 14px;border-radius:10px;color:#fff;font-size:1.15rem}
+.qa{background:var(--card);border-radius:10px;padding:12px 14px;margin:10px 0;border-left:6px solid}
+.q{font-weight:600}
+.a{margin-top:8px;padding:8px 12px;border-radius:8px}
+.a b{font-weight:700}
+.hide .a{display:none}
+.hide .qa{cursor:pointer}
+.tip{margin-top:6px;font-size:.92rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+<h1>Chapter 2: Application Layer</h1>
+<p class="sub">Easy questions and answers. Each topic has its own color, so it is easy to find and remember.</p>
+<div class="bar">
+<button id="tg">Hide answers (test yourself)</button>
+</div>
+<div class="legend" id="lg"></div>
+<div id="root"></div>
+</main>
+<script>
+const T=[
+["Basics of network apps",215,[
+["What is the application layer?","It is the top layer of the Internet. Programs like the Web, e-mail and Zoom work here."],
+["Name some network apps.","Web, e-mail, YouTube/Netflix, Zoom, Skype, online games, social media, file sharing."],
+["Do we need to write software for routers and switches?","No. We only write programs for end systems (our phone, laptop, server). Routers just pass data along."],
+["Why is it fast to create new apps?","Because apps run only on end systems, so we can build and spread them quickly."]]],
+["Client-server and P2P",170,[
+["What is a server?","A computer that is always on, has a permanent IP address and waits for requests. It is often in a data center."],
+["What is a client?","A device that asks the server for something. It can be off sometimes, can have a changing IP address and does not talk directly to other clients."],
+["Give examples of client-server protocols.","HTTP, IMAP and FTP."],
+["What is peer-to-peer (P2P)?","There is no always-on server. Normal computers (peers) talk to each other, give service and take service. Example: BitTorrent."],
+["What is good and bad about P2P?","Good: it scales itself, because every new peer brings new power. Bad: peers come and go and change IP addresses, so it is hard to manage."]]],
+["Processes, sockets and addresses",275,[
+["What is a process?","A program that is running on a host (computer)."],
+["What are the client process and server process?","Client process starts the talk. Server process waits to be contacted."],
+["How do two processes talk?","On the same computer, through inter-process communication (the OS handles it). On different computers, by sending messages."],
+["What is a socket?","A socket is like a door. A process pushes a message out of its door and the transport layer carries it to the door of the other process."],
+["Who controls what at the socket?","The app developer controls the application side. The operating system controls the transport side."],
+["Is an IP address enough to find a process?","No. Many processes run on one computer. We need the IP address plus the port number."],
+["What are the common port numbers?","HTTP web server = 80. Mail server (SMTP) = 25. FTP control = 21."],
+["What does an application-layer protocol define?","Types of messages (request/response), message format, meaning of the fields, and rules for when to send and reply."],
+["Open vs proprietary protocol?","Open protocols are public (written in RFCs), like HTTP and SMTP. Proprietary ones are private, like Skype and Zoom."]]],
+["Transport services, TCP and UDP",28,[
+["What 4 things can an app need from transport?","Throughput (speed), data integrity (no loss), timing (low delay) and security."],
+["What is an elastic app?","An app that works with any speed it gets, like e-mail or file download."],
+["Which apps cannot lose data? Which can?","No loss: file transfer, e-mail, web pages. Loss is OK: audio and video streaming, real-time calls."],
+["Which apps need low delay?","Internet phone calls and interactive games."],
+["What does TCP give us?","Reliable delivery, flow control (sender does not flood the receiver), congestion control (slows down when the network is busy), and it needs a connection first."],
+["What does TCP NOT give?","Timing, minimum speed guarantee and security."],
+["What does UDP give us?","Almost nothing: no reliability, no flow or congestion control, no connection setup. It is just fast and simple."],
+["Why do we use UDP then?","Because it is fast, has no setup delay and is good for apps that can lose a little data, like calls and games."],
+["Which transport do FTP, e-mail and the Web use?","TCP. Internet phone and streaming can use TCP or UDP."],
+["Is normal TCP secure?","No. Passwords travel as plain text. TLS fixes this by adding encryption, data integrity and authentication. TLS works in the application layer on top of TCP."]]],
+["Web and HTTP",140,[
+["What is a Web page made of?","A base HTML file plus objects such as images, audio and video. Each object has a URL."],
+["What are the two parts of a URL?","Host name (www.someschool.edu) and path name (/someDept/pic.gif)."],
+["What is HTTP?","Hypertext Transfer Protocol, the Web’s application-layer protocol. The browser (client) sends a request and the web server sends a response."],
+["Which transport and port does HTTP use?","TCP, port 80."],
+["What does “stateless” mean?","The server does not remember anything about past requests. Every request is separate."],
+["Non-persistent vs persistent HTTP?","Non-persistent: one TCP connection per object, then it closes. Persistent (HTTP 1.1): one connection stays open for many objects."],
+["What is RTT?","Round-trip time: the time for a small packet to go to the server and come back."],
+["What is the response time in non-persistent HTTP?","2 RTT + file transmission time (1 RTT for the TCP connection and 1 RTT for the request and response)."],
+["Why is persistent HTTP better?","It saves the 2 RTT per object and the OS work for each connection. It can need as little as 1 RTT for all objects."],
+["Name the main HTTP request methods.","GET (ask for an object), POST (send form data in the body), HEAD (headers only), PUT (upload or replace a file)."],
+["Common status codes?","200 OK (success), 301 Moved Permanently, 400 Bad Request, 404 Not Found, 505 HTTP Version Not Supported."]]],
+["Cookies and Web caches",330,[
+["Why do we need cookies?","HTTP is stateless, so websites use cookies to remember you between visits."],
+["What are the 4 parts of cookies?","1) Set-cookie line in the HTTP response. 2) Cookie line in the next HTTP request. 3) Cookie file on your computer. 4) Database at the website."],
+["How does a cookie work in a simple way?","First visit: the site makes an ID (like 1678) and stores it in its database. It sends the ID to your browser. Next visits: your browser sends the ID, so the site knows you."],
+["What are cookies used for?","Login, shopping carts, recommendations and web e-mail sessions."],
+["What is the privacy problem?","Third-party (tracking) cookies can follow you across many websites."],
+["What is a Web cache (proxy server)?","A nearby server that keeps copies of web objects. If it has the object, it sends it. If not, it gets it from the origin server, saves it and sends it to you."],
+["Why use a Web cache?","Faster response (cache is close), and less traffic on the institution’s Internet link."],
+["Cache example: what is the delay with a 0.4 hit rate?","40% of requests are served by the cache and 60% go out. Link use drops from 0.97 to 0.58. Average delay is about 1.2 seconds, much lower than before."],
+["What is a conditional GET?","The browser sends If-modified-since with the date of its saved copy. If nothing changed, the server replies 304 Not Modified and sends no object. If changed, it sends 200 OK with the new data."]]],
+["FTP",45,[
+["What is FTP?","File Transfer Protocol. It copies files to and from a remote computer using client-server."],
+["Which ports does FTP use?","Port 21 for the control connection and port 20 for the data connection."],
+["Why does FTP use two connections?","Control connection (“out of band”) carries commands and login. A new data connection is opened for each file and closed after the transfer."],
+["Is FTP stateless?","No. The FTP server remembers your login and current directory."],
+["Name some FTP commands.","USER (username), PASS (password), LIST (show files), RETR (get a file), STOR (put a file)."]]],
+["E-mail: SMTP, POP3, IMAP",5,[
+["What are the 3 parts of e-mail?","User agents (like Outlook), mail servers and SMTP."],
+["What does a mail server hold?","A mailbox with incoming messages and a queue of outgoing messages."],
+["What is SMTP and which port does it use?","Simple Mail Transfer Protocol. It sends mail from one mail server to another over TCP, port 25."],
+["What are the 3 phases of SMTP?","Handshaking (greeting), transfer of messages and closure."],
+["How does Alice send mail to Bob?","1) Alice writes it in her user agent. 2) It goes to her mail server’s queue. 3) Her server opens a TCP connection to Bob’s server. 4) It sends the message. 5) Bob’s server puts it in Bob’s mailbox. 6) Bob reads it with his user agent."],
+["HTTP vs SMTP?","HTTP is “pull” (client pulls objects). SMTP is “push” (client pushes mail). Both use text commands and status codes. SMTP sends many objects in one message and needs 7-bit ASCII."],
+["How does SMTP know the message has ended?","A single dot on a line by itself (CRLF.CRLF)."],
+["SMTP vs mail access protocols?","SMTP delivers mail to the receiver’s server. POP3, IMAP or HTTP are used by the user to get mail from that server."],
+["POP3 vs IMAP?","POP3 usually downloads and deletes mail, so you cannot re-read it on another device. IMAP keeps all mail on the server and lets you make folders. It remembers your state."]]],
+["DNS",250,[
+["What is DNS?","Domain Name System. It turns names like cs.umass.edu into IP addresses. It is a distributed database run by many name servers."],
+["Why do we need DNS?","People like names, but the Internet uses 32-bit IP addresses."],
+["What services does DNS give?","Name to IP translation, host aliasing, mail server aliasing and load distribution (many IPs for one name)."],
+["Why not use one central DNS server?","It does not scale: single point of failure, too much traffic, far away for many users, hard to maintain."],
+["Explain the DNS hierarchy.","Root servers at the top, then TLD servers (.com, .org, .edu), then authoritative servers (amazon.com, umass.edu)."],
+["Who looks after the root servers?","ICANN. There are 13 logical root servers, each copied many times."],
+["What is a TLD server? What is an authoritative server?","TLD: handles .com, .org, .edu and country domains like .uk. Authoritative: the organization’s own DNS server with the real name to IP records."],
+["What is a local DNS server?","The first server your computer asks, usually from your ISP. It answers from its cache or asks the DNS hierarchy for you."],
+["Iterated vs recursive query?","Iterated: the server says “I don’t know, ask this other server”. Recursive: the server does the whole search for you, which puts load on upper servers."],
+["What is DNS caching and TTL?","Servers save answers to reply faster. Each saved answer is deleted after a time called TTL. Cached data can be out of date."],
+["What are the DNS record types?","A: name to IP. CNAME: alias to real name. NS: domain to its authoritative server. MX: domain to mail server."],
+["What is a DNS resource record (RR) format?","(name, value, type, ttl)."],
+["How do you add a new company name to DNS?","Register the name with a registrar. It puts NS and A records into the .com TLD server. You then run your own authoritative server."],
+["What attacks can hit DNS?","DDoS (flooding root or TLD servers) and spoofing (fake replies, cache poisoning). DNSSEC adds security."]]],
+["P2P and DHT",190,[
+["How does BitTorrent work?","A file is split into chunks. A group of peers sharing it is a torrent. A new peer asks the tracker for a list of peers, then trades chunks with them."],
+["What is a tracker?","A server that keeps track of the peers in a torrent."],
+["What is churn?","Peers joining and leaving all the time."],
+["What is a hash table?","It turns the key into a number (hash) so storing and searching is easier."],
+["What is a Distributed Hash Table (DHT)?","A key-value database spread over millions of peers. Any peer can ask for a key and get the value with only a few messages. Each peer knows just a few others."],
+["What is a circular DHT?","Peers are arranged in a circle. Each peer knows only its next (successor) and previous (predecessor) peer. This is an overlay network."]]],
+["Socket programming",340,[
+["What are the two socket types?","UDP: unreliable datagrams. TCP: reliable byte stream."],
+["How does UDP socket programming work?","No connection and no handshake. The sender puts the destination IP and port on every packet. Data can be lost or come out of order."],
+["How does TCP socket programming work?","The server must be running first with a welcoming socket. The client connects, then a new socket is made for that client, so the server can serve many clients."],
+["What is the type for UDP and TCP sockets in Python?","UDP: SOCK_DGRAM. TCP: SOCK_STREAM."],
+["Which commands does a TCP server use?","bind(), listen(), accept(), recv(), send(), close()."],
+["Which commands does a UDP client use?","sendto() to send and recvfrom() to receive. No connect() is needed."],
+["What does the example app do?","The client sends a lowercase line to the server. The server changes it to UPPERCASE and sends it back. The client prints it."]]]
+];
+const root=document.getElementById('root'),lg=document.getElementById('lg');
+T.forEach(([name,h,qs],i)=>{
+ const col=`hsl(${h} 65% 38%)`;
+ const a=document.createElement('a');a.href='#t'+i;a.textContent=name;a.style.background=col;lg.appendChild(a);
+ const s=document.createElement('section');s.id='t'+i;
+ s.style.setProperty('--c',col);
+ let html=`<h2 style="background:${col}">${name}</h2>`;
+ qs.forEach(([q,an],j)=>{
+  html+=`<div class="qa" style="border-color:hsl(${h} 65% 48%)"><div class="q" style="color:hsl(${h} 70% var(--qs))">Q${j+1}. ${q}</div><div class="a" style="background:hsl(${h} 55% var(--ab))"><b>Answer:</b> ${an}</div></div>`;
+ });
+ s.innerHTML=html;root.appendChild(s);
+});
+const tg=document.getElementById('tg');
+tg.onclick=()=>{const h=root.classList.toggle('hide');tg.textContent=h?'Show answers':'Hide answers (test yourself)'};
+root.addEventListener('click',e=>{const c=e.target.closest('.qa');if(c&&root.classList.contains('hide')){const a=c.querySelector('.a');a.style.display=a.style.display==='block'?'':'block'}});
+</script>
+</body>
+</html>

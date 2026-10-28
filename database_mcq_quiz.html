@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Database Systems: 60 Scenario MCQs</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7fb;--tx:#1b2033;--card:#fff;--mut:#5a627b;--bd:#d6dbea;--qt:30%;--ok:#e3f6e8;--okb:#1f9d55;--no:#fde7e7;--nob:#d33a3a;--ex:#fff6d6}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13151e;--tx:#e8eaf3;--card:#1d2030;--mut:#a3a9c0;--bd:#343a55;--qt:78%;--ok:#15351f;--okb:#3ecf7a;--no:#3b1a1a;--nob:#ff6b6b;--ex:#3a3414}}
+:root[data-theme="dark"]{--bg:#13151e;--tx:#e8eaf3;--card:#1d2030;--mut:#a3a9c0;--bd:#343a55;--qt:78%;--ok:#15351f;--okb:#3ecf7a;--no:#3b1a1a;--nob:#ff6b6b;--ex:#3a3414}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.55 "Segoe UI",Calibri,Arial,sans-serif}
+header.top{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 16px}
+.top-in{max-width:820px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.top b{font-size:1.05rem}
+.prog{flex:1 1 180px;height:10px;background:var(--bd);border-radius:9px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3b5bdb,#12b886);transition:width .3s}
+.rs{font:inherit;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;background:#3b5bdb;color:#fff}
+main{max-width:820px;margin:0 auto;padding:18px 16px 56px}
+h1{font-size:1.65rem;margin:6px 0 4px}
+.sub{color:var(--mut);margin:0 0 12px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+.legend a{color:#fff;text-decoration:none;font-size:.85rem;padding:3px 10px;border-radius:99px}
+section{margin:28px 0}
+section h2{margin:0;padding:10px 14px;border-radius:10px 10px 0 0;color:#fff;font-size:1.15rem}
+.intro{margin:0 0 10px;padding:8px 14px;border-radius:0 0 10px 10px;font-size:.92rem}
+.qa{background:var(--card);border-radius:10px;padding:14px;margin:12px 0;border-left:6px solid}
+.q{font-weight:600;margin-bottom:10px}
+.n{font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--bd);border-radius:9px;padding:8px 12px;margin:6px 0;cursor:pointer}
+.opt:hover:not(:disabled){border-color:currentColor}
+.opt:focus-visible{outline:3px solid #f59f00}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--ok);border-color:var(--okb)}
+.opt.no{background:var(--no);border-color:var(--nob)}
+.fb{margin-top:10px;padding:9px 12px;border-radius:8px;background:var(--ex);font-size:.95rem}
+.fb .v{font-weight:700}
+.fb .v.g{color:var(--okb)}.fb .v.r{color:var(--nob)}
+.res{display:none;margin:20px 0;padding:16px;border-radius:12px;background:var(--card);border:2px solid #3b5bdb;text-align:center;font-size:1.1rem}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+<b id="sc">Score: 0 / 0</b>
+<div class="prog"><i id="pb"></i></div>
+<button class="rs" id="rs">Start again</button>
+</div></header>
+<main>
+<h1>Database Systems: 60 Scenario MCQs</h1>
+<p class="sub">Weeks 4 and 5: Database Languages, Relational Algebra, Joins, Anomalies, Functional Dependencies, 1NF and 2NF. Tap an answer. If you are wrong, the right answer turns green and a short reason is shown.</p>
+<div class="legend" id="lg"></div>
+<div id="root"></div>
+<div class="res" id="res"></div>
+</main>
+<script>
+const T=[
+["Database Languages (DDL, DML, DCL, TCL)",215,"",[
+["A DBA must add an Email column to the Student table that already holds data. Which sub-language does this command belong to?",["DDL","DML","DCL","TCL"],0,"ALTER changes the structure of a table, so it is DDL."],
+["A teaching assistant should only read the Student table, and must not update or delete rows. Which command does the DBA run?",["GRANT ALL ON Student TO TA_User;","REVOKE SELECT ON Student FROM TA_User;","GRANT SELECT ON Student TO TA_User;","COMMIT;"],2,"GRANT SELECT gives read-only access. This is DCL."],
+["In a bank transfer, the debit from account A succeeded but the credit to account B failed. What should the system do?",["COMMIT the debit","ROLLBACK the whole transaction","DROP the Accounts table","TRUNCATE the Accounts table"],1,"A transaction is all or nothing. ROLLBACK undoes every change in it."],
+["An admin runs DROP TABLE Student by mistake and then tries ROLLBACK. Why does it NOT bring the table back?",["ROLLBACK only works on SELECT","The table was never created","Only DCL can be undone","DDL commands are auto-committed"],3,"DDL changes are saved automatically and cannot simply be rolled back."],
+["A clerk runs DELETE FROM Student WHERE RollNo=1001 and has NOT committed yet. He notices it was the wrong student. What can he do?",["Run ROLLBACK to undo it","Nothing, it is permanent","Run DROP TABLE","Run GRANT"],0,"DML is not auto-committed, so ROLLBACK can undo it before COMMIT."],
+["At the end of the semester, the university wants to remove ALL rows from Student but keep the table for the next batch. Best command?",["DROP TABLE Student","DELETE Student","TRUNCATE TABLE Student","ALTER TABLE Student"],2,"TRUNCATE removes all rows and keeps the structure. DROP would delete the table itself."],
+["The command UPDATE Student SET Age = 21 is run. Which sub-language is it?",["DDL","DML","DCL","TCL"],1,"UPDATE changes the data inside rows, so it is DML."],
+["Inside one long transaction, a user wants to undo only the last few changes, not everything. Which command helps?",["COMMIT","REVOKE","SAVEPOINT","DROP"],2,"SAVEPOINT marks a point to roll back to without undoing the whole transaction."],
+["Ali has the right to read Student, but the DBA now wants to take this right away. Which command?",["REVOKE SELECT ON Student FROM Ali;","GRANT SELECT ON Student TO Ali;","DELETE FROM Student;","ROLLBACK;"],0,"REVOKE removes privileges that were granted earlier (DCL)."],
+["A table’s life: CREATE TABLE, INSERT, GRANT, COMMIT, SELECT. Which list gives the correct sub-languages in order?",["DML, DDL, DCL, TCL, DML","DDL, DML, DCL, TCL, DML","DDL, DCL, DML, TCL, DDL","DCL, DDL, TCL, DML, DML"],1,"CREATE = DDL, INSERT = DML, GRANT = DCL, COMMIT = TCL, SELECT = DML."],
+["A DBA wants to enforce the Security goal by deciding WHO can do WHICH operation on WHICH table. Which sub-language is used?",["DDL","DML","TCL","DCL"],3,"DCL (GRANT and REVOKE) controls access rights."],
+["An online shop must insert an order row AND reduce the stock row. Either both must happen or none. Which sub-language manages this?",["TCL","DDL","DCL","DML only"],0,"TCL (COMMIT and ROLLBACK) makes a group of DML operations succeed or fail together."]
+]],
+["Selection (σ) and Projection (π)",145,"Use this table for all questions in this part. STUDENT(RollNo, Name, Age, Dept): (1, Ali, 20, CS), (2, Sara, 22, SE), (3, Bilal, 21, CS), (4, Hina, 19, SE), (5, Omar, 22, CS).",[
+["How many rows does σ Age > 20 (STUDENT) return?",["2","3","4","5"],1,"Sara (22), Bilal (21) and Omar (22). Ali is exactly 20, so he is not included."],
+["How many rows does σ Dept = 'CS' ∧ Age < 22 (STUDENT) return?",["1","3","2","0"],2,"Ali (20, CS) and Bilal (21, CS). Omar is CS but his age is 22."],
+["How many rows does π Dept (STUDENT) return?",["2","3","4","5"],0,"Duplicates are removed. Only CS and SE remain."],
+["What is the degree (number of columns) of π Name, Age (STUDENT)?",["4","5","1","2"],3,"The degree equals the number of attributes in the projection list."],
+["The registrar wants only the names of SE students. Which expression is correct?",["σ Name (STUDENT)","π Dept (σ Name (STUDENT))","π Name (σ Dept = 'SE' (STUDENT))","σ Dept = 'SE' (π Name (STUDENT))"],2,"First select the SE rows (inner σ), then keep only the Name column (outer π)."],
+["A student writes σ Dept = 'CS' (π Name (STUDENT)). Why does this fail?",["σ cannot be nested","Dept was removed by the projection before σ needed it","π must always come last in SQL","Name is not an attribute"],1,"After π Name, only the Name column is left, so the condition on Dept cannot be checked."],
+["Which SQL statement is equivalent to σ Age > 20 (STUDENT)?",["SELECT Age FROM Student","SELECT * FROM Student WHERE Age > 20","SELECT DISTINCT Age FROM Student","SELECT * FROM Student, Student"],1,"Selection works like the WHERE clause."],
+["A relation R has 100 tuples. What is the maximum number of tuples in σ c (R)?",["200","10,000","Any number","100"],3,"Selection only filters. It can never add rows."],
+["A query optimizer swaps the order of two selections, σ c1 (σ c2 (R)) to σ c2 (σ c1 (R)). Why is this allowed?",["Selection is commutative","Selection is not commutative","Projection is commutative","It is a bug"],0,"Applying two conditions in either order gives the same result."],
+["A manager wants every student’s Name and Dept but must NOT see Age. Which operator fits?",["Selection σ","Cartesian product ×","Projection π","Rollback"],2,"Projection chooses columns."],
+["How do π Name, Dept (R) and π Dept, Name (R) differ?",["They return different rows","Same information, different column order","The second is invalid","They have different degrees"],1,"Order of attributes matters only for how the columns are displayed."],
+["Why can the output of σ be directly used as the input of π?",["Because both use the symbol Σ","Because π is faster","Because SQL allows it","Because of the Closure Property: output is always a relation"],3,"Every operation takes relations in and gives one relation out, so operations can be nested."]
+]],
+["Cartesian Product and Joins",275,"Use these tables. STUDENT(RollNo, Name): (1, Ali), (2, Sara), (3, Bilal). ENROLLMENT(RollNo, CourseCode): (1, CS101), (2, SE201), (9, IT301). Roll number 9 is a data-entry error with no student.",[
+["R has 50 tuples and S has 20 tuples. How many tuples are in R × S?",["70","30","1000","200"],2,"Cardinality of a Cartesian product is |R| × |S| = 50 × 20."],
+["R has 4 attributes and S has 3 attributes. What is the degree of R × S?",["7","12","3","4"],0,"Degrees add: 4 + 3 = 7."],
+["Two tables have 1,000 rows each. A developer runs SELECT * FROM R, S with no join condition. How many rows come out?",["2,000","1,000,000","1,000","0"],1,"Every row is paired with every row, so 1,000 × 1,000. Most pairs are meaningless."],
+["A join R ⋈ S on a condition is equal to which expression?",["π condition (R ∪ S)","R − S","σ condition (S) × R only","σ condition (R × S)"],3,"A join is a Cartesian product followed by a selection."],
+["How many rows does the Natural Join STUDENT ⋈ ENROLLMENT return?",["3","2","4","9"],1,"Only RollNo 1 (Ali) and 2 (Sara) match in both tables."],
+["The university wants a list of EVERY student, even those not enrolled in any course. Which join?",["Natural Join","Right Outer Join","Left Outer Join","Cartesian Product"],2,"Left Outer Join keeps all rows from the left relation (STUDENT) and fills NULLs for no match."],
+["The registrar wants EVERY enrollment record, even the data-entry error with RollNo 9. Which join?",["STUDENT ⋈ ENROLLMENT","STUDENT ⋈L ENROLLMENT","STUDENT × ENROLLMENT","STUDENT ⋈R ENROLLMENT"],3,"Right Outer Join keeps all rows from the right relation (ENROLLMENT), with Name = NULL for RollNo 9."],
+["The auditor wants everything from both tables, matched or not. Which join?",["Inner join","Full Outer Join","Theta join","Natural join"],1,"Full Outer Join keeps unmatched rows from both sides."],
+["How many rows does STUDENT ⋈F ENROLLMENT (Full Outer Join) return?",["2","3","4","9"],2,"Ali, Sara, Bilal (CourseCode NULL) and IT301 (Name NULL) = 4 rows."],
+["In an Equijoin on RollNo = RollNo, what appears in the result that does NOT appear in a Natural Join?",["Both copies of the RollNo column","Fewer rows","NULL values","A Cartesian product"],0,"Equijoin keeps duplicate join columns. Natural Join removes the extra copy."],
+["HR wants to pair each employee with every salary grade whose minimum the employee’s salary exceeds (Salary > MinSalary). Which join?",["Natural Join","Theta Join","Equijoin","Full Outer Join"],1,"Theta Join allows any comparison operator, not just equality."],
+["Bilal has not enrolled in any course. What happens to him in STUDENT ⋈ ENROLLMENT (Natural Join)?",["He disappears from the result","He appears with NULL","He appears twice","He is deleted from STUDENT"],0,"Inner joins drop tuples that have no match."],
+["Which statement about Full Outer Join is correct?",["It is the same as Natural Join","It drops all unmatched rows","It equals the union of the Left and Right Outer Joins","It has no NULLs"],2,"Full Outer Join = Left Outer Join combined with Right Outer Join."],
+["Which statement is correct about Cartesian Product and Join?",["Join has no condition","Cartesian Product always has a condition","They are exactly the same","Cartesian Product has no condition, a Join always has one"],3,"A join has an explicit or implicit condition. A Cartesian product pairs everything."]
+]],
+["Database Anomalies",30,"Use this table. STUDENT_COURSE(RollNo, Name, Dept, CourseCode, Instructor) with primary key (RollNo, CourseCode). Ali Khan appears in two rows (CS101 and CS102). Sara is the only student in SE201, taught by Dr. Malik.",[
+["A new student, Hina, has not chosen a course yet, but the table forces us to enter a CourseCode for her. What is this problem?",["Deletion anomaly","Insertion anomaly","Update anomaly","Closure problem"],1,"We cannot insert student data without unrelated course data."],
+["Ali moves from CS to SE. The clerk updates only one of his two rows, so the table now shows him in two departments. What is this?",["Insertion anomaly","Deletion anomaly","Update anomaly","Natural join"],2,"The same fact is stored in many rows, so a missed row creates inconsistency."],
+["Sara withdraws from SE201 and her row is deleted. The fact that Dr. Malik teaches SE201 also disappears. What is this?",["Deletion anomaly","Insertion anomaly","Update anomaly","Trivial dependency"],0,"Deleting one row removed unrelated information too."],
+["What is the root cause of these anomalies?",["Too many indexes","Missing GRANT commands","Using COMMIT too often","One table mixes facts about more than one entity"],3,"Student facts and course facts are mixed, so data is repeated."],
+["Ali’s Name and Dept are repeated in two rows. What do we call this and what does it lead to?",["Redundancy, which leads to anomalies","Closure, which leads to joins","Atomicity, which leads to 1NF","Selection, which leads to NULLs"],0,"Repeated data (redundancy) is what causes insertion, update and deletion anomalies."],
+["Which process fixes anomalies by restructuring tables using functional dependencies?",["Rollback","Truncation","Normalization","Projection"],2,"Normalization organizes attributes to reduce redundancy and remove anomalies."]
+]],
+["Functional Dependencies",0,"Use the same STUDENT_COURSE table: primary key (RollNo, CourseCode).",[
+["What does the functional dependency RollNo → Name mean?",["Name determines RollNo","Each RollNo determines exactly one Name","Each Name has many RollNos","Both are keys"],1,"X → Y means each value of X has exactly one value of Y."],
+["The table has two rows with CourseCode SE201 but different Instructors. Which FD is violated?",["RollNo → Name","RollNo → Dept","CourseCode → Instructor","Name → Dept"],2,"One CourseCode must give exactly one Instructor."],
+["What type of FD is {RollNo, Name} → Name?",["Trivial","Partial","Transitive","Full"],0,"The right side is a subset of the left side, so it is always true (trivial)."],
+["Name depends only on RollNo, not on the whole key (RollNo, CourseCode). What kind of dependency is this?",["Trivial","Transitive","Full","Partial"],3,"It depends on only part of a composite key, so it is a partial dependency."],
+["If X → Y and Y → Z, where Y is not a key, then X → Z is called what?",["Partial dependency","Transitive dependency","Trivial dependency","Full dependency"],1,"This chain through a non-key attribute is a transitive dependency (removed by 3NF)."],
+["In the FD CourseCode → Instructor, what is CourseCode called?",["Dependent","Foreign key","Determinant","Tuple"],2,"The left side of an FD is the determinant."],
+["An attribute depends on the WHOLE of a composite key, not on any smaller part. What is it called?",["Full functional dependency","Partial dependency","Transitive dependency","Trivial dependency"],0,"Full functional dependency means all key parts are needed."],
+["A designer finds partial dependencies in a table. Which normal form removes them?",["1NF","3NF","BCNF","2NF"],3,"2NF removes partial dependencies. 3NF removes transitive ones."]
+]],
+["Normalization: 1NF and 2NF",260,"",[
+["A table stores Courses as “CS101, CS102” in one cell for Ali. Which normal form does it violate?",["2NF","1NF","3NF","None"],1,"1NF needs atomic (single) values in every cell."],
+["How do you convert that table to 1NF?",["Put one course per row","Delete the Courses column","Add a SAVEPOINT","Use a Left Outer Join"],0,"Split the multi-valued field so each cell holds one value."],
+["A table in 1NF has a single-attribute primary key. Which statement is true?",["It must have partial dependencies","It cannot be in 2NF","It is automatically in 2NF","It violates 1NF"],2,"Partial dependency needs a composite key, so a single-attribute key is automatically 2NF."],
+["A 1NF table has the composite key (RollNo, CourseCode), and Name depends only on RollNo. Which statement is right?",["It is in 2NF","It is not in 1NF","It needs a Cartesian product","It is not in 2NF"],3,"A partial dependency breaks 2NF."],
+["Which decomposition correctly puts STUDENT_COURSE into 2NF?",["One bigger table with all columns","STUDENT(RollNo, Name, Dept), COURSE(CourseCode, Instructor), ENROLLMENT(RollNo, CourseCode)","Only ENROLLMENT(RollNo, CourseCode)","STUDENT(RollNo) and COURSE(Name)"],1,"Each fact is stored once: student facts, course facts, and the link between them."],
+["A friend says, “1NF is optional.” What is the correct response?",["Wrong: every valid relation is already in 1NF","Correct: 1NF is only for big tables","Correct: only DDL needs it","Wrong: only 2NF is needed"],0,"By definition, a relation must have atomic values, so it is already in 1NF."],
+["After removing partial dependencies, a designer wants to remove transitive dependencies. Which normal form is next?",["1NF","2NF","3NF","Cartesian form"],2,"3NF (Week 6) removes transitive dependencies."],
+["Which statement correctly compares 1NF and 2NF?",["2NF needs no atomic values","1NF removes partial dependencies","They are identical","2NF = 1NF + no partial dependency"],3,"2NF is stricter: it must satisfy 1NF and also have no partial dependency."]
+]]
+];
+const L="ABCD",root=document.getElementById('root'),lg=document.getElementById('lg');
+let total=0,done=0,right=0;
+T.forEach(t=>total+=t[3].length);
+function upd(){document.getElementById('sc').textContent=`Score: ${right} / ${done}  (of ${total})`;document.getElementById('pb').style.width=(done/total*100)+'%';
+ const r=document.getElementById('res');if(done===total){r.style.display='block';const p=Math.round(right/total*100);r.innerHTML=`<b>Finished! You scored ${right} out of ${total} (${p}%).</b><br>${p>=80?'Excellent work.':p>=60?'Good. Review the red questions again.':'Keep practicing. Read the slides again and try once more.'}`}else r.style.display='none'}
+function build(){
+ root.innerHTML='';lg.innerHTML='';done=0;right=0;let k=0;
+ T.forEach(([name,h,intro,qs],i)=>{
+  const col=`hsl(${h} 65% 38%)`;
+  const a=document.createElement('a');a.href='#t'+i;a.textContent=name;a.style.background=col;lg.appendChild(a);
+  const s=document.createElement('section');s.id='t'+i;
+  s.innerHTML=`<h2 style="background:${col}">${name}</h2>`+(intro?`<p class="intro" style="background:hsl(${h} 60% 92%);color:#1b2033">${intro}</p>`:'');
+  qs.forEach(([q,o,c,e])=>{
+   k++;
+   const d=document.createElement('div');d.className='qa';d.style.borderColor=`hsl(${h} 65% 48%)`;
+   d.innerHTML=`<div class="q"><span class="n" style="color:hsl(${h} 70% var(--qt))">Q${k}.</span> ${q}</div>`;
+   const btns=o.map((t,j)=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=`${L[j]}. ${t}`;d.appendChild(b);return b});
+   const fb=document.createElement('div');fb.className='fb';fb.hidden=true;d.appendChild(fb);
+   btns.forEach((b,j)=>b.onclick=()=>{
+    btns.forEach(x=>x.disabled=true);
+    btns[c].classList.add('ok');done++;
+    if(j===c){right++;fb.innerHTML=`<span class="v g">Correct!</span> ${e}`}
+    else{b.classList.add('no');fb.innerHTML=`<span class="v r">Wrong.</span> The right answer is <b>${L[c]}. ${o[c]}</b>. ${e}`}
+    fb.hidden=false;upd();
+   });
+   s.appendChild(d);
+  });
+  root.appendChild(s);
+ });
+ upd();
+}
+document.getElementById('rs').onclick=()=>{build();window.scrollTo(0,0)};
+build();
+</script>
+</body>
+</html>
